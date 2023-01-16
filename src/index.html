@@ -1,7 +1,37 @@
 <!DOCTYPE html>
+
 <html>
-  <body>
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages.</p>
-  </body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="ここにページの概要が入ります。">
+
+        <link rel="stylesheet" href="css/style1.css">
+        <link rel="stylesheet" href="css/forms.css">
+
+        <title>リンクHP管理を便利にするツールサイト</title>
+    <body>
+        <p>詳細を張り付けるとコピーボタン用とユーザー用の詳細を作るツール</p>
+        <form action="" onsubmit="return false">
+            <textarea name="" id="text" cols="30" rows="10"></textarea>
+        </form>
+        <input type="submit" value="詳細を作る" name="" id="" onclick="TRIGGER()">
+        <input type="button" value="クリア" onclick="CLEAR_TEXTAREA()" />
+
+        <p>コピーボタン用</p>
+        <p>※クリックで全選択できます</p>
+        <form action="" onsubmit="return false" onclick="TEXT_SELECT_FOR_COPY_BUTTON()">
+            <textarea id="resultForCopyButton" name="" cols="30" rows="10" value="コピー対象の文言" readonly></textarea>
+        </form>
+
+        <p>詳細用</p>
+        <p>※クリックで全選択できます</p>
+        <form action="" onsubmit="return false" onclick="TEXT_SELECT()">
+            <textarea id="result" name="" cols="30" rows="10" value="コピー対象の文言" readonly></textarea>
+        </form>
+
+        <p>HPでの見え方</p>
+        <div id="resultHTML"></div>
+        <script src="/js/CreateDetailTextForCopyButtonAndForDetails.js" async></script>
+    </body>
 </html>

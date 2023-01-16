@@ -1,0 +1,37 @@
+/*個別投稿の店舗詳細デザイン*/
+.detail_box {
+  /* display: none; */
+  border: solid 1px #999;
+  border-radius: 3px;
+}
+.detail_titel {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  /*  background-color:#0000; */
+  /* 	  background-color:rgba(191,197,202,0.5); */
+}
+.detail_text {
+  display: block;
+  padding: 10px;
+  padding-bottom: 10px;
+  line-height: 1.4;
+  /* 	margin:1%px; */
+  /* 	background-color:#ffffff; */
+  background-color: #fffeff;
+  /* 	background-color:#fffffe; */
+}
+.detail_text a {
+  /* 	background-color:#fffeff;
+	display : block;
+	width:50%; */
+}
+.detail_bigSpace {
+}
+/*背景色*/
+body {
+  background-color: #ededed;
+  /* 	font-family:"ヒラギノ明朝 ProN W6"; */
+}
+
+/*  */
