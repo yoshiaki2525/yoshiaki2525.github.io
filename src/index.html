@@ -11,23 +11,24 @@
 
         <title>リンクHP管理を便利にするツールサイト</title>
     <body>
-        <p>詳細を張り付けるとコピーボタン用とユーザー用の詳細を作るツール</p>
+        <p>■コピーボタン用とユーザー用の詳細を作るツール</p>
+        <p>□詳細入力フォーム</p>
         <form action="" onsubmit="return false">
-            <textarea name="" id="text" cols="30" rows="10"></textarea>
+            <textarea name="" id="text" cols="30" rows="10" placeholder="詳細を入力してください。"></textarea>
         </form>
         <input type="submit" value="詳細を作る" name="" id="" onclick="TRIGGER()">
         <input type="button" value="クリア" onclick="CLEAR_TEXTAREA()" />
 
-        <p>コピーボタン用</p>
+        <p>□コピーボタン用</p>
         <p>※クリックで全選択できます</p>
         <form action="" onsubmit="return false" onclick="TEXT_SELECT_FOR_COPY_BUTTON()">
-            <textarea id="resultForCopyButton" name="" cols="30" rows="10" value="コピー対象の文言" readonly></textarea>
+            <textarea id="resultForCopyButton" name="" cols="30" rows="10" placeholder="コピーボタン用の詳細が出力されます。" value="コピー対象の文言" readonly></textarea>
         </form>
 
-        <p>詳細用</p>
+        <p>□ユーザー詳細用</p>
         <p>※クリックで全選択できます</p>
         <form action="" onsubmit="return false" onclick="TEXT_SELECT()">
-            <textarea id="result" name="" cols="30" rows="10" value="コピー対象の文言" readonly></textarea>
+            <textarea id="result" name="" cols="30" rows="10" placeholder="ユーザー用の詳細が出力されます。"  value="コピー対象の文言" readonly></textarea>
         </form>
 
         <p>HPでの見え方</p>
