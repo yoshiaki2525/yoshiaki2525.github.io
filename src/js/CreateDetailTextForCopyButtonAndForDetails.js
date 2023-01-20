@@ -20,9 +20,12 @@
  * return　HPの詳細用のタグが付いた店舗詳細テキスト
  */
 function INSERT_APPROPRIATE_TAGS(textData) {
-  const ContentEndTitleStartTags = "</span>\n<span class='detail_titel'>";
+  // 【】はタイトルで統一したいので【】を削除
+  textData = textData.replace(/【|】/g, '');
+  const ContentEndTitleStartTags = "</span>\n<span class='detail_titel'>【";
   //テキスト全体を詳細テキストBOXタグで囲む為にテキストの文頭にタグを付加
-  textData = "<div class='detail_box'><span class='detail_titel'>" + textData;
+  textData =
+    "<div class='detail_box'><span class='detail_titel'>" + '【' + textData;
 
   // すべての改行文字をbrタグに変換
   textData = textData.replace(/\r\n/g, '<br>');
@@ -39,11 +42,12 @@ function INSERT_APPROPRIATE_TAGS(textData) {
     'g'
   );
 
-  const Regexp_setAppropriateTags = function (all, titleText, br, href) {
+  const Regexp_setAppropriateTags = function (all, titleText, br, line) {
     console.log(arguments);
     return (
       "<span class='detail_titel'>" +
       titleText +
+      '】' +
       "</span>\n<span class='detail_text'>"
     );
   };
@@ -84,12 +88,40 @@ function INSERT_APPROPRIATE_TAGS(textData) {
  * return　{String} - HPのコピーボタン用の詳細テキスト
  */
 function REPLACE_BLANK_LINES_TO_BR_TAG(textData) {
+  // 【】はタイトルで統一したいので【】を削除
+  textData = textData.replace(/【|】/g, '');
+
   //テキスト全体をコピーボタンタグで囲む為にテキストの文頭にタグを付加
-  textData = "<pre class='preHidden'>" + textData;
+  textData = "<pre class='preHidden'>" + '【' + textData;
 
   // 連続する改行文字(空白行)をbrタグに変換
-  textData = textData.replace(/\r\n{2,}/g, '<br>\n');
-  textData = textData.replace(/(\n|\r){2,}/g, '<br>\n');
+  textData = textData.replace(/\r\n{2,}/g, '<br>【');
+  textData = textData.replace(/(\n|\r){2,}/g, '<br>【');
+
+  //タイトタグとbrタグの最小にタイトル終了タグとコンテンツの開始タグを挿入する
+  const TitleStartTag = '【';
+  const endTag = '(\r\n|\n|\r)';
+  const Regexp_BetweenTitleStartEndTag = new RegExp(
+    TitleStartTag + '(.*?)' + endTag,
+    'g'
+  );
+
+  const Regexp_setAppropriateTags = function (all, titleText, br, line) {
+    console.log(arguments);
+    return '【' + titleText + '】';
+  };
+
+  textData = textData.replace(
+    Regexp_BetweenTitleStartEndTag,
+    Regexp_setAppropriateTags
+  ); // マッチした部分だけ残すように置換
+
+  // 見た目を整える等の微調整
+  // コード側から見やすくするために<br>の後に改行文字を入れる
+  // textData = textData.replace(/<br>/g, '<br>\n');
+  // コード側から見やすくするために【の前、】の後に改行文字を入れる
+  textData = textData.replace(/【/g, '\n【');
+  textData = textData.replace(/】/g, '】\n');
 
   //テキスト全体をコピーボタンタグで囲む為にテキストの末尾にもタグを付加
   textData += '</pre>';
