@@ -20,8 +20,9 @@
  * return　HPの詳細用のタグが付いた店舗詳細テキスト
  */
 function INSERT_APPROPRIATE_TAGS(textData) {
-  // 【】はタイトルで統一したいので【】を削除
+  // タイトル【】で統一する為の処理
   textData = textData.replace(/【|】/g, '');
+  textData = textData.replace(/■|□|◆|◇/g, '');
   const ContentEndTitleStartTags = "</span>\n<span class='detail_titel'>【";
   //テキスト全体を詳細テキストBOXタグで囲む為にテキストの文頭にタグを付加
   textData =
@@ -88,8 +89,9 @@ function INSERT_APPROPRIATE_TAGS(textData) {
  * return　{String} - HPのコピーボタン用の詳細テキスト
  */
 function REPLACE_BLANK_LINES_TO_BR_TAG(textData) {
-  // 【】はタイトルで統一したいので【】を削除
+  // タイトル【】で統一する為の処理
   textData = textData.replace(/【|】/g, '');
+  textData = textData.replace(/■|□|◆|◇/g, '');
 
   //テキスト全体をコピーボタンタグで囲む為にテキストの文頭にタグを付加
   textData = "<pre class='preHidden'>" + '【' + textData;
