@@ -23,6 +23,15 @@ function INSERT_APPROPRIATE_TAGS(textData) {
   // タイトル【】で統一する為の処理
   textData = textData.replace(/【|】/g, '');
   textData = textData.replace(/■|□|◆|◇/g, '');
+
+  // 文頭、末尾、無意味なスペースを削除
+  // 無意味な
+  textData = textData.replace(/\n\s+\n/g, '\n\n');
+  // 文頭
+  textData = textData.replace(/\n(?!\n)+\s+/g, '\n');
+  // 末尾(?!\n)\s+\n
+  textData = textData.replace(/(?!\n)\s+\n/g, '\n');
+
   const ContentEndTitleStartTags = "</span>\n<span class='detail_titel'>【";
   //テキスト全体を詳細テキストBOXタグで囲む為にテキストの文頭にタグを付加
   textData =
@@ -74,9 +83,13 @@ function INSERT_APPROPRIATE_TAGS(textData) {
 
   // タイトタグの直後にbrタグが来る場合を修正
   textData = textData.replace(
-    /<span class='detail_titel'>(\r\n|\n|\r}\b)*<br \/>/g,
+    /<span class='detail_titel'>(\r\n|\n|\r}\b)*<br>/g,
     "<span class='detail_titel'>"
   );
+
+  // 】の前に謎のスペースが入る場合があるのでそれを削除
+  textData = textData.replace(/\s】/g, '】\n');
+
   const textDataVerAppropriateTags = textData;
 
   return textDataVerAppropriateTags;
@@ -92,6 +105,18 @@ function REPLACE_BLANK_LINES_TO_BR_TAG(textData) {
   // タイトル【】で統一する為の処理
   textData = textData.replace(/【|】/g, '');
   textData = textData.replace(/■|□|◆|◇/g, '');
+
+  // 文頭、末尾、無意味なスペースを削除
+  // 無意味な
+  textData = textData.replace(/\n\s+\n/g, '');
+  // 文頭
+  textData = textData.replace(/\n(?!\n)+\s+/g, '\n');
+  // 末尾(?!\n)\s+\n
+  textData = textData.replace(/(?!\n)\s+\n/g, '\n');
+  console.log(textData);
+
+  // // 文頭、末尾の余分なスペースを削除
+  // textData = textData.replace(/\n(?!\n)+\s+/g, '');
 
   //テキスト全体をコピーボタンタグで囲む為にテキストの文頭にタグを付加
   textData = "<pre class='preHidden'>" + '【' + textData;
@@ -121,9 +146,13 @@ function REPLACE_BLANK_LINES_TO_BR_TAG(textData) {
   // 見た目を整える等の微調整
   // コード側から見やすくするために<br>の後に改行文字を入れる
   // textData = textData.replace(/<br>/g, '<br>\n');
+
   // コード側から見やすくするために【の前、】の後に改行文字を入れる
   textData = textData.replace(/【/g, '\n【');
   textData = textData.replace(/】/g, '】\n');
+
+  // 】の前に謎のスペースが入る場合があるのでそれを削除
+  textData = textData.replace(/\s】/g, '】\n');
 
   //テキスト全体をコピーボタンタグで囲む為にテキストの末尾にもタグを付加
   textData += '</pre>';
