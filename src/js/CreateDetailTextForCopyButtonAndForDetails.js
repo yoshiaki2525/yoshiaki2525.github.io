@@ -22,7 +22,7 @@
 function INSERT_APPROPRIATE_TAGS(textData) {
   // タイトル【】で統一する為の処理
   textData = textData.replace(/【|】/g, '');
-  textData = textData.replace(/■|□|◆|◇/g, '');
+  textData = textData.replace(/■|□|◆|◇|《|》/g, '');
 
   // 文頭、末尾、無意味なスペースを削除
   // 無意味な
@@ -104,7 +104,7 @@ function INSERT_APPROPRIATE_TAGS(textData) {
 function REPLACE_BLANK_LINES_TO_BR_TAG(textData) {
   // タイトル【】で統一する為の処理
   textData = textData.replace(/【|】/g, '');
-  textData = textData.replace(/■|□|◆|◇/g, '');
+  textData = textData.replace(/■|□|◆|◇|《|》/g, '');
 
   // 文頭、末尾、無意味なスペースを削除
   // 無意味な
