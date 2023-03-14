@@ -2,7 +2,7 @@
  * 関数一覧
  *
  * INSERT_APPROPRIATE_TAGS - 詳細を適切なタグで囲む関数
- * REPLACE_BLANK_LINES_TO_BR_TAG - 引数で受け取ったテキスト内の連続する改行文字(空白行)ををbrタグに変換する関数
+ * REPLACE_MARKUP_TAG_TO_BR_TAG - 引数で受け取ったテキスト内のマークアップタグ(売春婦:)ををbrタグに変換する関数
  * REPLACE_URL_WITHOUT_A_TAG_TO_LINK_WITH_A_TAG - テキスト内からURLを見つけてaタグで囲む関数
  * TRIGGER - コピーボタン用と詳細用の詳細テキスト作って出力する関数
  * TEXT_SELECT_FOR_COPY_BUTTON -コピーボタン用のテキストを全選択する関数
@@ -19,13 +19,14 @@
  *
  * return　HPの詳細用のタグが付いた店舗詳細テキスト
  */
+// 修正点：関数名適切に
 function INSERT_APPROPRIATE_TAGS(textData) {
   // タイトル【】で統一する為の処理
   textData = textData.replace(/【|】/g, '');
   textData = textData.replace(/■|□|◆|◇|《|》/g, '');
 
-  // 文頭、末尾、無意味なスペースを削除
-  // 無意味な
+  // 文頭、末尾、3つ以上の改行を調整
+  // 三つ以上の改行を調整
   textData = textData.replace(/\n\s+\n/g, '\n\n');
   // 文頭
   textData = textData.replace(/\n(?!\n)+\s+/g, '\n');
@@ -36,16 +37,19 @@ function INSERT_APPROPRIATE_TAGS(textData) {
   //テキスト全体を詳細テキストBOXタグで囲む為にテキストの文頭にタグを付加
   textData =
     "<div class='detail_box'><span class='detail_titel'>" + '【' + textData;
+  // textData = "<div class='detail_box'>" + textData;
 
   // すべての改行文字をbrタグに変換
   textData = textData.replace(/\r\n/g, '<br>');
   textData = textData.replace(/(\n|\r)/g, '<br>');
 
-  // ２個以上連続する<br>をコンテンツ終了タイトル開始タグに変換。
-  textData = textData.replace(/(<br>){2,}/g, '\n' + ContentEndTitleStartTags);
+  // 開始マークアップタグをコンテンツ終了タイトル開始タグに変換。
+  textData = textData.replace(/売春婦:/g, ContentEndTitleStartTags);
+  // textData = textData.replace(/売春婦:/g, '\n' + 'aaa');
 
   //タイトタグとbrタグの最小にタイトル終了タグとコンテンツの開始タグを挿入する
   const TitleStartTag = "<span class='detail_titel'>";
+  // 修正：変数名適切に
   const brTag = '<br>';
   const Regexp_BetweenTitleStartBrTag = new RegExp(
     TitleStartTag + '(.*?)' + brTag,
@@ -68,18 +72,11 @@ function INSERT_APPROPRIATE_TAGS(textData) {
   ); // マッチした部分だけ残すように置換
 
   //見た目を整える等の微調整
+  // コンテンツの終了タグ直前の余分brタグを置き換え
+  textData = textData.replace(/<br><\/span>/g, '</span>');
+
   //コード側から見やすくするために<br>の後に改行文字を入れる
   textData = textData.replace(/<br>/g, '<br>\n');
-
-  //テキスト全体を詳細テキストBOXで囲む為にテキストの末尾にもタグを付加
-  textData += '</div>';
-
-  //予期せぬ実行等の微調整
-  // たまに 〜</span><span class='detail_titel'></span><span class='detail_titel'>と何もない段落が出来てしまう場合があるのでそれを削除
-  textData = textData.replace(
-    /<\/span><span class='detail_titel'><\/span><span class='detail_titel'>/,
-    ''
-  );
 
   // タイトタグの直後にbrタグが来る場合を修正
   textData = textData.replace(
@@ -101,7 +98,7 @@ function INSERT_APPROPRIATE_TAGS(textData) {
  *
  * return　{String} - HPのコピーボタン用の詳細テキスト
  */
-function REPLACE_BLANK_LINES_TO_BR_TAG(textData) {
+function REPLACE_MARKUP_TAG_TO_BR_TAG(textData) {
   // タイトル【】で統一する為の処理
   textData = textData.replace(/【|】/g, '');
   textData = textData.replace(/■|□|◆|◇|《|》/g, '');
@@ -122,8 +119,15 @@ function REPLACE_BLANK_LINES_TO_BR_TAG(textData) {
   textData = "<pre class='preHidden'>" + '【' + textData;
 
   // 連続する改行文字(空白行)をbrタグに変換
-  textData = textData.replace(/\r\n{2,}/g, '<br>【');
-  textData = textData.replace(/(\n|\r){2,}/g, '<br>【');
+  textData = textData.replace(/\r\n{2,}/g, '<br>\n');
+  textData = textData.replace(/(\n|\r){2,}/g, '<br>\n');
+
+  // 改行文字(空白行)を削除
+  // textData = textData.replace(/\r\n{2,}/g, '');
+  // textData = textData.replace(/(\n|\r){2,}/g, '');
+
+  // 開始マークアップタグをコンテンツ終了タイトル開始タグに変換。
+  textData = textData.replace(/売春婦:/g, '【');
 
   //タイトタグとbrタグの最小にタイトル終了タグとコンテンツの開始タグを挿入する
   const TitleStartTag = '【';
@@ -148,7 +152,7 @@ function REPLACE_BLANK_LINES_TO_BR_TAG(textData) {
   // textData = textData.replace(/<br>/g, '<br>\n');
 
   // コード側から見やすくするために【の前、】の後に改行文字を入れる
-  textData = textData.replace(/【/g, '\n【');
+  // textData = textData.replace(/【/g, '\n【');
   textData = textData.replace(/】/g, '】\n');
 
   // 】の前に謎のスペースが入る場合があるのでそれを削除
@@ -190,7 +194,7 @@ function REPLACE_URL_WITHOUT_A_TAG_TO_LINK_WITH_A_TAG(textData) {
  */
 function TRIGGER() {
   const textData = document.getElementById('text').value;
-  const textDataVerForCopyButton = REPLACE_BLANK_LINES_TO_BR_TAG(textData);
+  const textDataVerForCopyButton = REPLACE_MARKUP_TAG_TO_BR_TAG(textData);
   const textDataVerAppropriateTags = INSERT_APPROPRIATE_TAGS(textData);
   const textDataVerAppropriateTagsAndUrlToLink =
     REPLACE_URL_WITHOUT_A_TAG_TO_LINK_WITH_A_TAG(textDataVerAppropriateTags);
