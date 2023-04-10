@@ -99,10 +99,6 @@ function INSERT_APPROPRIATE_TAGS(textData) {
  * return　{String} - HPのコピーボタン用の詳細テキスト
  */
 function REPLACE_MARKUP_TAG_TO_BR_TAG(textData) {
-  // タイトル【】で統一する為の処理
-  textData = textData.replace(/【|】/g, '');
-  textData = textData.replace(/■|□|◆|◇|《|》/g, '');
-
   // 文頭、末尾、無意味なスペースを削除
   // 無意味な
   textData = textData.replace(/\n\s+\n/g, '');
@@ -113,50 +109,18 @@ function REPLACE_MARKUP_TAG_TO_BR_TAG(textData) {
   console.log(textData);
 
   // // 文頭、末尾の余分なスペースを削除
-  // textData = textData.replace(/\n(?!\n)+\s+/g, '');
+  textData = textData.replace(/\n(?!\n)+\s+/g, '');
 
   //テキスト全体をコピーボタンタグで囲む為にテキストの文頭にタグを付加
-  textData = "<pre class='preHidden'>" + '【' + textData;
+  textData = "<pre class='preHidden'>" + textData;
 
   // 連続する改行文字(空白行)をbrタグに変換
   textData = textData.replace(/\r\n{2,}/g, '<br>\n');
   textData = textData.replace(/(\n|\r){2,}/g, '<br>\n');
 
-  // 改行文字(空白行)を削除
-  // textData = textData.replace(/\r\n{2,}/g, '');
-  // textData = textData.replace(/(\n|\r){2,}/g, '');
-
-  // 開始マークアップタグをコンテンツ終了タイトル開始タグに変換。
-  textData = textData.replace(/売春婦:/g, '【');
-
-  //タイトタグとbrタグの最小にタイトル終了タグとコンテンツの開始タグを挿入する
-  const TitleStartTag = '【';
-  const endTag = '(\r\n|\n|\r)';
-  const Regexp_BetweenTitleStartEndTag = new RegExp(
-    TitleStartTag + '(.*?)' + endTag,
-    'g'
-  );
-
-  const Regexp_setAppropriateTags = function (all, titleText, br, line) {
-    console.log(arguments);
-    return '【' + titleText + '】';
-  };
-
-  textData = textData.replace(
-    Regexp_BetweenTitleStartEndTag,
-    Regexp_setAppropriateTags
-  ); // マッチした部分だけ残すように置換
-
   // 見た目を整える等の微調整
   // コード側から見やすくするために<br>の後に改行文字を入れる
-  // textData = textData.replace(/<br>/g, '<br>\n');
-
-  // コード側から見やすくするために【の前、】の後に改行文字を入れる
-  // textData = textData.replace(/【/g, '\n【');
-  textData = textData.replace(/】/g, '】\n');
-
-  // 】の前に謎のスペースが入る場合があるのでそれを削除
-  textData = textData.replace(/\s】/g, '】\n');
+  textData = textData.replace(/<br>/g, '<br>\n');
 
   //テキスト全体をコピーボタンタグで囲む為にテキストの末尾にもタグを付加
   textData += '</pre>';
